@@ -14,6 +14,15 @@ const MapScreen = () => {
           longitudeDelta: 0.0421,
         }} 
       >
+        <Marker 
+          coordinate={{
+            latitude: 10.1689842,
+            longitude: -68.0019041,
+          }}
+          title='Aqui Estoy'
+          description='ubicacion actual'
+        />
+
       </MapView>
     </View>
   )
