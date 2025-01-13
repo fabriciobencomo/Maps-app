@@ -43,7 +43,7 @@ export const useLocationStore = create<LocationState>()((set, get) => ({
   clearWatchLocation: () => {
     const subscrition = get().watchSubscriptionID
     if(subscrition !== null){
-      subscrition.remove
+      subscrition.remove()
     }
   }
 }))
