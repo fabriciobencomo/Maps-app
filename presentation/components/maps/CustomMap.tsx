@@ -1,7 +1,7 @@
 import { View, Text, ViewProps, StyleSheet, ActivityIndicator } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { LatLng } from '@/infrastructure/interfaces/lat-lng';
-import MapView from 'react-native-maps';
+import MapView, { Polyline } from 'react-native-maps';
 import { useLocationStore } from '@/presentation/store/useLocationsStore';
 import FAB from '../shared/FAB';
 
@@ -14,8 +14,9 @@ const CustomMap = ({initialLocation, showUserLocation = true , ...rest}: Props) 
 
   const mapRef = useRef<MapView>(null)
   const [isFollowingUser, setIsFollowingUser] = useState(true)
+  const [isShowingPolyline, setIsShowingPolyline] = useState(true)
  
-  const {watchLocation, clearWatchLocation, lastKnownLocation, getLocation} = useLocationStore()
+  const {watchLocation, clearWatchLocation, lastKnownLocation, getLocation, userLocationList} = useLocationStore()
   
   useEffect(() => {
     
@@ -67,10 +68,17 @@ const CustomMap = ({initialLocation, showUserLocation = true , ...rest}: Props) 
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }} 
-      >
+      > 
+      {
+        isShowingPolyline && (
+          <Polyline coordinates={userLocationList} strokeColor={'black'} strokeWidth={5} />
+        )    
+      }
+        
       </MapView>
       <FAB iconName='compass-outline' onPress={moveToCurrentLocation} style={{bottom: 20, right:20}}/>
       <FAB iconName={isFollowingUser ? 'walk-outline' : 'accessibility-outline'} onPress={() => setIsFollowingUser(!isFollowingUser)} style={{bottom: 80, right:20}}/>
+      <FAB iconName={isShowingPolyline ? 'eye-outline' : 'eye-off-outline'} onPress={() => setIsShowingPolyline(!isShowingPolyline)} style={{bottom: 140, right:20}}/>
     </View>
   )
 }
